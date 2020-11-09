@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Library {
+public class Book {
 
 
     @Id
@@ -19,7 +19,7 @@ public class Library {
 
     private String bookDescription;
 
-    public Library(long bookId, String bookName, String author, String bookDescription) {
+    public Book(long bookId, String bookName, String author, String bookDescription) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.author = author;
