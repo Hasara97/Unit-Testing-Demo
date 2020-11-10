@@ -17,7 +17,7 @@ public class BookService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
 
-    public Book saveLibrary(Book book) {
+    public Book saveBook(Book book) {
 
         LOGGER.info("Storing the book");
         return bookRepository.save(book);
