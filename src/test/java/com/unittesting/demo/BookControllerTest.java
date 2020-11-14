@@ -3,7 +3,6 @@ package com.unittesting.demo;
 import com.unittesting.demo.controller.BookController;
 import com.unittesting.demo.model.Book;
 import com.unittesting.demo.service.BookService;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,9 +22,6 @@ import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UnitTestingApplication.class)
@@ -66,10 +61,8 @@ public class BookControllerTest {
         Book book = new Book(123, "Lord of the Rings", "Tolkien", "Fantasy genre book");
 
         when(bookService.getBookById(123)).thenReturn(book);
-
-        mockMvc.perform(get("http://localhost:8080/books/{bookId}", 123).contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("author", Matchers.is("Tolkien")));
+        
+        Assert.assertEquals(book, bookController.getBook(123).getBody());
 
 
     }
@@ -87,10 +80,7 @@ public class BookControllerTest {
 
         when(bookService.getAllBooks()).thenReturn(books);
 
-
-        mockMvc.perform(get("http://localhost:8080/books").contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", Matchers.hasSize(2)));
+        Assert.assertEquals(books, bookController.getAllBooks().getBody());
 
     }
 
