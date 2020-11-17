@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
@@ -107,5 +108,15 @@ public class BookServiceTest {
 
         Assert.assertEquals(bookUpdated.getBookName(), bookService.updateBook(123, book).getBookName());
 
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGetBookByNonExistingId() throws Exception {
+
+        Book book = new Book(123, "Lord of the Rings", "Tolkien", "Fantasy genre book");
+
+        Mockito.when(bookRepository.findById((long) 123)).thenReturn(Optional.of(book));
+
+        Assert.assertEquals(book, bookService.getBookById(456));
     }
 }
